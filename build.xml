@@ -1,0 +1,73 @@
+
+
+<project name="LEMSViewer build and deploy" default="war" basedir=".">
+    <description>
+         
+    </description>
+
+	
+    <property file="000VERSION"/>
+
+    <property environment="env"/> 
+	
+	
+	
+	
+	<target name="clean">
+		<mkdir dir="build"/>
+		<delete dir="build" includes="*" failonerror="false"/>
+	</target>	
+	
+	
+	
+	<target name="war" depends="clean">
+		<mkdir dir="war/WEB-INF/classes/org/lemsml/jlems"/>
+		<copy todir="war/WEB-INF/classes/org/lemsml">
+			<fileset dir="../jLEMSDev/bin/org/lemsml" includes="jlems/**"/>
+		</copy>
+	
+		<zip destfile="build/lemsviewer.war" basedir="war" includes="**"/>
+	</target>	 
+	 
+	 
+	
+	<target name="deploy-local-war" depends="war">
+     <echo message="Copying lemsviewer.war to /var/lib/tomcat6/webapps"/>
+     <copy file="build/lemsviewer.war" tofile="/var/lib/tomcat6/webapps/lemsviewer.war"/>
+       
+ </target>
+ 
+	   
+	
+	  
+	
+	
+	<target name="deploy-174-war" depends="war">
+ 	     <property name="scp-tmp" value="annotate:epoixa34@174.143.241.62:/tmp"/>
+
+         <tstamp>
+            <format property="deploy-tstamp" pattern="yyyy-MM-dd_hh-mm"/>
+          </tstamp>
+          <copy file="build/pm.war" tofile="build/pm-${deploy-tstamp}.war"/>
+
+
+		  <echo message="Copying pm.war to ${scp-tmp}"/>
+		 <scp todir="${scp-tmp}">
+		      <fileset dir="build">
+		        <include name="pm-${deploy-tstamp}.war"/>
+		      </fileset>
+		    </scp>
+		<sshexec host="174.143.241.62"
+			username="annotate"
+			password="epoixa34"
+			command="cp /tmp/pm-${deploy-tstamp}.war /var/lib/tomcat6/webapps/gts.war"/>
+		
+	 
+		
+	</target>
+	
+
+  
+	
+	
+</project>

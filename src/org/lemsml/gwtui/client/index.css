@@ -1,0 +1,35 @@
+
+body, table td, select {
+    font-family: Arial, sans-serif;
+}
+
+
+.gwt-Frame {
+	border-width : 0px;
+}
+
+.xmleditor {
+	white-space : pre;
+	font-family : "Courier New", Courier, monospace;
+	padding : 6px;
+}
+ 
+
+.xmlcontent {
+
+}
+
+.sidetitle {
+	padding :2px 20px;
+	font-weight : bold;
+	font-size : 14pt;
+	color : #606060;	
+}
+
+.graphscroll {
+	background-color : #c0c0c0;	
+}
+
+.graphpanel {
+	padding-right : 12px;
+}
