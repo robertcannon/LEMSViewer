@@ -2,9 +2,7 @@ package org.lemsml.gwtui.client.worker;
 
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.sim.Sim;
-
-import com.google.gwt.user.client.Timer;
-
+ 
 public class SimWorkerServer {
  
 	Sim sim;
@@ -26,24 +24,35 @@ public class SimWorkerServer {
 	 		var str = "" + e.data;
   	  		sws.@org.lemsml.gwtui.client.worker.SimWorkerServer::messageFromClient(Ljava/lang/String;)(str);
   		}		
-  		
-  	 
 	}-*/;
 	
 	
 	
-	
-	
-	
 	public void messageFromClient(String s) {
-		String start = s.substring(0, 10);
+ 		int sl = s.length();
+		if (sl > 10) {
+			sl = 10;
+		}
+		String start = s.substring(0, sl);
 		if (start.indexOf("STOP") >= 0) {
 			if (sim != null) {
 			//	sim.setStop();
 			}
 			
+		} else if (start.indexOf("RUNTEST") >= 0) {
+			sendMessageToClient("PING 1");
+			
+			
 		} else if (start.indexOf("PING") >= 0) {
-			sendMessageToClient("PONG");
+			String[] sa = start.split(" ");
+			if (sa.length > 1) {
+				int ino = Integer.parseInt(sa[1]);
+				if (ino < 10) {
+					sendMessageToClient("PING " + (ino + 1));
+				} else {
+					sendMessageToClient("LOG test complete");
+				}
+			}
 			
 		} else if (start.indexOf("RUNMODEL") >= 0) {
 			String rest = s.substring(9, s.length());

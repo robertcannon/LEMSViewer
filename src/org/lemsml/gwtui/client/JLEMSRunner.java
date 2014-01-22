@@ -42,9 +42,12 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 	ScrollPanel graphScroll;
 	FlowPanel graphPanel;
 	
-	UserAction uaRun = new UserAction("Run", Action.RUN);
+	UserAction uaRun = new UserAction("Run Sync.", Action.RUN);
 	
-	UserAction uaWkr = new UserAction("WorkerTest", Action.RUN);
+	UserAction uaRunWkr= new UserAction("Run in Worker", Action.RUN);
+	
+	UserAction uaTestWkr = new UserAction("Worker Test", Action.RUN);
+	
 	
 	// UserAction uaRunExample = new UserAction("Run ModelFileUserexample test", Action.RUN);
 	
@@ -92,9 +95,12 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		hp.add(runB.getWidget());
 		
 		
-		ActionButton wkrB = new ActionButton(uaWkr, this);
+		ActionButton wkrB = new ActionButton(uaRunWkr, this);
 		hp.add(wkrB.getWidget());
 	 
+		ActionButton testB = new ActionButton(uaTestWkr, this);
+		hp.add(testB.getWidget());
+		
 		
 		mainLayout.addNorth(headerPanel, 32);
 	
@@ -152,9 +158,12 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 			String stxt = editor.getText(); 
 			runSim(stxt);
 		
-		} else if (ma.equals(uaWkr)) {
+		} else if (ma.equals(uaRunWkr)) {
 			String stxt = editor.getText(); 
 			runWorkerSim(stxt);
+		
+		} else if (ma.equals(uaTestWkr)) {
+			testWorker();
 		}
 		
 		
@@ -206,7 +215,7 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		graphPanel.clear();
 		
 		if (simWorkerClient == null) {
-			simWorkerClient = new SimWorkerClient(logger);
+			simWorkerClient = new SimWorkerClient(logger, graphPanel);
 			
 		} else {
 			simWorkerClient.stopSim();
@@ -214,6 +223,26 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		
 		simWorkerClient.runSim(stxt);
 	}
+	
+	
+	private void testWorker() {
+		logger.clear();
+		graphPanel.clear();
+		
+		if (simWorkerClient == null) {
+			simWorkerClient = new SimWorkerClient(logger, graphPanel);
+			
+		} else {
+			simWorkerClient.stopSim();
+		}
+		
+		simWorkerClient.runTest();
+	}
+	
+	
+	
+	
+	
 	
 	
 	
