@@ -79,8 +79,18 @@ public class SimWorkerClient {
 	public native void createWorker(String url, SimWorkerClient wh) /*-{
 	 
       function jsReceive(e) {
- 		 var str = "" + e.data;
-	  	  wh.@org.lemsml.gwtui.client.worker.SimWorkerClient::messageFromWorker(Ljava/lang/String;)(str);
+ 		  if (typeof(e.data) == "object") {
+ 		  	var pts = e.data.data;
+ 		  	for (var i = 0; i < pts.length; i++) {
+ 		  		var pt = pts[i];
+ 		   	    wh.@org.lemsml.gwtui.client.worker.SimWorkerClient::receivePoint(Ljava/lang/String;Ljava/lang/String;DDLjava/lang/String;)(pt.graph, pt.line, pt.x, pt.y, pt.color);		
+ 		  	}
+ 		  	
+ 		  	
+ 		  } else {
+ 		     var str = "" + e.data;
+	  	     wh.@org.lemsml.gwtui.client.worker.SimWorkerClient::messageFromWorker(Ljava/lang/String;)(str);
+ 		  }
       }		
 		
 	  // worker = new Worker("viewer.nocache.js");  
@@ -108,6 +118,10 @@ public class SimWorkerClient {
 		console.log("done");
 	}-*/;
 	
+	
+	public void receivePoint(String grid, String line, double x, double y, String col) {
+		dvHM.get(grid).addPoint(line, x, y, col);
+	}
 	
 	
 	public void messageFromWorker(String s) {

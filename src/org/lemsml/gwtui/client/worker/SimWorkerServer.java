@@ -2,12 +2,17 @@ package org.lemsml.gwtui.client.worker;
 
 import org.lemsml.jlems.core.display.DataViewerFactory;
 import org.lemsml.jlems.core.sim.Sim;
+
+import com.google.gwt.core.client.JavaScriptObject;
  
 public class SimWorkerServer {
  
 	Sim sim;
 	
- 
+	boolean groupPoints = true;
+	
+	JavaScriptObject pointArray = null;
+	
 	
 	public SimWorkerServer() {
 		WorkerDataViewerFactory wdf = new WorkerDataViewerFactory(this);
@@ -96,17 +101,47 @@ public class SimWorkerServer {
 	 }-*/;
     
 	
+	public native void initQueue() /*-{
+		pointArray = [];
+	}-*/;
+	
+	public native void queuePoint(String grid, String line, double x, double y, String scol) /*-{
+		var o = {};
+		o.graph = grid;
+		o.line = line;
+		o.x = x;
+		o.y = y;
+		o.color = scol;
+		pointArray.push(o);
+		
+		if (pointArray.length > 50) {
+			var msg = {};
+			msg.id = "POINTS";
+			msg.data = pointArray;
+			postMessage(msg);
+		}
+		pointArray = [];
+	}-*/;
+	
+	
 
 	public void startNewGraph(String myId, String title) {
+		initQueue();
 		String msg = "NEWGRAPH " + myId + " " + title;
 		sendMessageToClient(msg);
 	}
 
 
-	public void addPoint(String myId, String line, double x, double y, String scol) {
+	public void addPoint(String grId, String line, double x, double y, String scol) {
 		// TODO Auto-generated method stub
-		String msg = "ADDPOINT " + myId + " " + line + " " + x + " " + y + " " + scol;
-		sendMessageToClient(msg);
+		
+		if (groupPoints) {
+			queuePoint(grId, line, x, y, scol);
+			
+		} else {
+			String msg = "ADDPOINT " + grId + " " + line + " " + x + " " + y + " " + scol;
+			sendMessageToClient(msg);			
+		}
 	}
 
 
