@@ -37,36 +37,7 @@
        
  </target>
  
-	   
-	
-	  
-	
-	
-	<target name="deploy-174-war" depends="war">
- 	     <property name="scp-tmp" value="annotate:epoixa34@174.143.241.62:/tmp"/>
-
-         <tstamp>
-            <format property="deploy-tstamp" pattern="yyyy-MM-dd_hh-mm"/>
-          </tstamp>
-          <copy file="build/pm.war" tofile="build/pm-${deploy-tstamp}.war"/>
-
-
-		  <echo message="Copying pm.war to ${scp-tmp}"/>
-		 <scp todir="${scp-tmp}">
-		      <fileset dir="build">
-		        <include name="pm-${deploy-tstamp}.war"/>
-		      </fileset>
-		    </scp>
-		<sshexec host="174.143.241.62"
-			username="annotate"
-			password="epoixa34"
-			command="cp /tmp/pm-${deploy-tstamp}.war /var/lib/tomcat6/webapps/gts.war"/>
-		
-	 
-		
-	</target>
-	
-
+	   b
   
 	
 	
