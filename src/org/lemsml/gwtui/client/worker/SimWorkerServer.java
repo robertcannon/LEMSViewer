@@ -12,7 +12,8 @@ public class SimWorkerServer {
 	boolean groupPoints = true;
 	
 	JavaScriptObject pointArray = null;
-	
+	JavaScriptObject pointGroupSize = null;
+	JavaScriptObject lastSend = null;
 	
 	public SimWorkerServer() {
 		WorkerDataViewerFactory wdf = new WorkerDataViewerFactory(this);
@@ -25,6 +26,11 @@ public class SimWorkerServer {
 	
 	 
 	public native void createJsHandler(SimWorkerServer sws) /*-{
+		
+		pointGroupSize = 10;
+		lastSend = 0;
+		
+		
   		self.onmessage = function(e) {
 	 		var str = "" + e.data;
   	  		sws.@org.lemsml.gwtui.client.worker.SimWorkerServer::messageFromClient(Ljava/lang/String;)(str);
@@ -85,11 +91,15 @@ public class SimWorkerServer {
 			sim.run();
 			logMsg("Completed run");
 			
+			flushPoints();
 			
 		} catch (Exception ex) {
 			logMsg("error " + ex);
 		}
 	}
+	
+	
+	
 	
 	private void logMsg(String s) {
 		sendMessageToClient("LOG " + s);
@@ -114,17 +124,38 @@ public class SimWorkerServer {
 		o.color = scol;
 		pointArray.push(o);
 		
-		if (pointArray.length > 50) {
+		if (pointArray.length >= pointGroupSize) {
 			var msg = {};
 			msg.id = "POINTS";
 			msg.data = pointArray;
 			postMessage(msg);
+    		pointArray = [];
+    		
+    		var tnow = (new Date()).getTime();
+    		if (lastSend > 0) {
+    			var dt = tnow - lastSend;
+    			if (dt < 1) {
+    				dt = 1;
+    			} 
+    			var pgs = (250 / dt) * pointGroupSize;
+    			pointGroupSize = Math.round(0.7 * pointGroupSize + 0.3 * pgs);
+    		}
+    		lastSend = tnow;
 		}
-		pointArray = [];
 	}-*/;
 	
 	
-
+	public native void flushPoints() /*-{
+	    if (pointArray.length > 0) {
+		    var msg = {};
+		    msg.id = "POINTS";
+		    msg.data = pointArray;
+		    postMessage(msg);
+		    pointArray = [];
+	    }
+    }-*/;
+	
+	
 	public void startNewGraph(String myId, String title) {
 		initQueue();
 		String msg = "NEWGRAPH " + myId + " " + title;

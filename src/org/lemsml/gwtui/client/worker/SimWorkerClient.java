@@ -81,11 +81,12 @@ public class SimWorkerClient {
       function jsReceive(e) {
  		  if (typeof(e.data) == "object") {
  		  	var pts = e.data.data;
- 		  	for (var i = 0; i < pts.length; i++) {
+ 		  	
+ 		  	console.log("got points " + pts.length);
+  		  	for (var i = 0; i < pts.length; i++) {
  		  		var pt = pts[i];
  		   	    wh.@org.lemsml.gwtui.client.worker.SimWorkerClient::receivePoint(Ljava/lang/String;Ljava/lang/String;DDLjava/lang/String;)(pt.graph, pt.line, pt.x, pt.y, pt.color);		
  		  	}
- 		  	
  		  	
  		  } else {
  		     var str = "" + e.data;
@@ -97,7 +98,7 @@ public class SimWorkerClient {
 	  // worker = new Worker("worker.nocache.js");
 	
 	 console.log("loading js...");
-	  worker = new Worker("../task.js");
+	 worker = new Worker("../task.js");
 
  	console.log("made worker");
   	  worker.addEventListener('message', jsReceive, false);

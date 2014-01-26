@@ -42,6 +42,8 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 	ScrollPanel graphScroll;
 	FlowPanel graphPanel;
 	
+	ScrollPanel logScroll;
+	
 	UserAction uaRun = new UserAction("Run Sync.", Action.RUN);
 	
 	UserAction uaRunWkr= new UserAction("Run in Worker", Action.RUN);
@@ -105,30 +107,30 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		mainLayout.addNorth(headerPanel, 32);
 	
 		
-		editor = new XMLEditor();
-		editor.setHeight(600);
-	
-		mainLayout.addWest(editor.getPanel(), 300);
-	
-	
-		ScrollPanel logScroll = new ScrollPanel();
-		mainLayout.addNorth(logScroll, 200);
+		FlowPanel bottomRow = new FlowPanel();
+		mainLayout.addSouth(bottomRow, 0);
+		
+		
+		graphScroll = new ScrollPanel();
+		graphScroll.addStyleName("graphscroll");
+		graphPanel = new FlowPanel();
+		graphPanel.addStyleName("graphpanel");
+		graphScroll.add(graphPanel);
+		mainLayout.addEast(graphScroll, 600);
+		graphScroll.setHeight("600px");	
+		
+
+		logScroll = new ScrollPanel();
+		mainLayout.addSouth(logScroll, 200);
 		resultPanel = new FlowPanel();
 		logScroll.add(resultPanel);
 		logger = new BrowserMessageHandler(resultPanel);
 		E.setMessageHandler(logger);
 		
 		
-		graphScroll = new ScrollPanel();
-		graphScroll.addStyleName("graphscroll");
-		
-		graphPanel = new FlowPanel();
-		
-		graphPanel.addStyleName("graphpanel");
-		
-		graphScroll.add(graphPanel);
-		mainLayout.add(graphScroll);
-		graphScroll.setHeight("600px");	
+		editor = new XMLEditor();
+		editor.setHeight(600);
+		mainLayout.add(editor.getPanel());
 	
 	
 		
@@ -280,8 +282,11 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		int wh = Window.getClientHeight();
 			
 		int xptop = editor.getPanel().getAbsoluteTop();
-		editor.setHeight(wh - xptop);
+		int lstop = logScroll.getAbsoluteTop();
+		logScroll.setHeight((wh - lstop) + "px");
 		
+		editor.setHeight(lstop - xptop);
+				
 		int gstop = graphScroll.getAbsoluteTop();
 		graphScroll.setHeight((wh - gstop) + "px");
 	}
