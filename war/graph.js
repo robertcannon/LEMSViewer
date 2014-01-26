@@ -270,7 +270,7 @@ function Graph(parent, dl) {
 			sty.display = "none";
 			
 			helpDiv.showing = false;
-			div.appendChild(helpDiv);
+			ctrlsDiv.appendChild(helpDiv);
 		}
 		
 		if (helpDiv.showing) {

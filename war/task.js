@@ -30,9 +30,9 @@ document.write = function(str){console.log("tried to write " + str); console.log
 
 document.compatMode = "CSS1Compat";
 
-importScripts("../worker/worker.nocache.js?a=12345");
+importScripts("worker/worker.nocache.js?a=1234");
 
-self.postMessage("LOG Loaded worker.nocache.js setting readyState comlete");
+self.postMessage("LOG Loaded worker.nocache.js setting readyState complete");
 
 document.readyState = "complete";
 

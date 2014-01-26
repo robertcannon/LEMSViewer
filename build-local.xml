@@ -1,0 +1,66 @@
+<project name="LEMSViewer build and deploy" default="war" basedir=".">
+    <description>
+         
+    </description>
+
+    <property file="000VERSION"/>
+
+    <property environment="env"/> 
+    
+	
+    
+	
+	<path id="gwt.classpath">
+		<pathelement location="src"/>
+		<pathelement location="../jLEMSDev/src"/>
+		<pathelement location="war/WEB-INF/classes"/>
+		<pathelement location="../jLEMSDev/bin"/>
+		<fileset dir="/usr/local/gwt-sdks/gwt-2.4.0/" includes="validation-api*.jar"/>
+		<fileset dir="/usr/local/gwt-sdks/gwt-2.4.0/" includes="gwt-*.jar"/>
+		<fileset dir="war/WEB-INF/lib" includes="gwt-*.jar"/>
+	</path>
+	
+	
+	
+	<target name="gwtcompile">
+		<java failonerror="true" fork="true" 
+			classname="com.google.gwt.dev.Compiler"
+			classpathref="gwt.classpath">
+					
+			<arg line="-war"/>
+			<arg value="war"/>
+			<arg value="org.lemsml.gwtui.LEMSViewer"/>
+		</java>
+		
+		
+	</target>
+	
+	 
+ 
+
+	<target name="clean">
+		<mkdir dir="build"/>
+		<delete dir="build" includes="*" failonerror="false"/>
+	</target>	
+	
+	
+	
+	<target name="war" depends="clean">
+		<mkdir dir="war/WEB-INF/classes/org/lemsml/jlems"/>
+		<copy todir="war/WEB-INF/classes/org/lemsml">
+			<fileset dir="../jLEMSDev/bin/org/lemsml" includes="jlems/**"/>
+		</copy>
+	
+		<zip destfile="build/lemsviewer.war" basedir="war" includes="**"/>
+	</target>	 
+	 
+	 
+    <target name="deploy-local-war" depends="war">
+        <echo message="Copying lemsviewer.war to /var/lib/tomcat7/webapps"/>
+        <copy file="build/lemsviewer.war" tofile="/var/lib/tomcat7/webapps/lemsviewer.war"/>
+       
+    </target>
+ 
+	
+	
+</project>

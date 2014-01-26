@@ -1,9 +1,7 @@
 package org.lemsml.gwtui.client.worker;
 
 import org.lemsml.jlems.core.display.DataViewer;
-
-import com.google.gwt.user.client.ui.FlowPanel;
-
+ 
 public class WorkerDataViewer implements DataViewer {
  
 	SimWorkerServer simWorkerServer;

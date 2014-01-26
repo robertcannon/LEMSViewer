@@ -42,9 +42,14 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 	ScrollPanel graphScroll;
 	FlowPanel graphPanel;
 	
-	UserAction uaRun = new UserAction("Run", Action.RUN);
+	ScrollPanel logScroll;
 	
-	UserAction uaWkr = new UserAction("WorkerTest", Action.RUN);
+	UserAction uaRun = new UserAction("Run Sync.", Action.RUN);
+	
+	UserAction uaRunWkr= new UserAction("Run in Worker", Action.RUN);
+	
+	UserAction uaTestWkr = new UserAction("Worker Test", Action.RUN);
+	
 	
 	// UserAction uaRunExample = new UserAction("Run ModelFileUserexample test", Action.RUN);
 	
@@ -92,37 +97,40 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		hp.add(runB.getWidget());
 		
 		
-		ActionButton wkrB = new ActionButton(uaWkr, this);
+		ActionButton wkrB = new ActionButton(uaRunWkr, this);
 		hp.add(wkrB.getWidget());
 	 
+		ActionButton testB = new ActionButton(uaTestWkr, this);
+		hp.add(testB.getWidget());
+		
 		
 		mainLayout.addNorth(headerPanel, 32);
 	
 		
-		editor = new XMLEditor();
-		editor.setHeight(600);
-	
-		mainLayout.addWest(editor.getPanel(), 300);
-	
-	
-		ScrollPanel logScroll = new ScrollPanel();
-		mainLayout.addNorth(logScroll, 200);
+		FlowPanel bottomRow = new FlowPanel();
+		mainLayout.addSouth(bottomRow, 0);
+		
+		
+		graphScroll = new ScrollPanel();
+		graphScroll.addStyleName("graphscroll");
+		graphPanel = new FlowPanel();
+		graphPanel.addStyleName("graphpanel");
+		graphScroll.add(graphPanel);
+		mainLayout.addEast(graphScroll, 600);
+		graphScroll.setHeight("600px");	
+		
+
+		logScroll = new ScrollPanel();
+		mainLayout.addSouth(logScroll, 200);
 		resultPanel = new FlowPanel();
 		logScroll.add(resultPanel);
 		logger = new BrowserMessageHandler(resultPanel);
 		E.setMessageHandler(logger);
 		
 		
-		graphScroll = new ScrollPanel();
-		graphScroll.addStyleName("graphscroll");
-		
-		graphPanel = new FlowPanel();
-		
-		graphPanel.addStyleName("graphpanel");
-		
-		graphScroll.add(graphPanel);
-		mainLayout.add(graphScroll);
-		graphScroll.setHeight("600px");	
+		editor = new XMLEditor();
+		editor.setHeight(600);
+		mainLayout.add(editor.getPanel());
 	
 	
 		
@@ -152,9 +160,12 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 			String stxt = editor.getText(); 
 			runSim(stxt);
 		
-		} else if (ma.equals(uaWkr)) {
+		} else if (ma.equals(uaRunWkr)) {
 			String stxt = editor.getText(); 
 			runWorkerSim(stxt);
+		
+		} else if (ma.equals(uaTestWkr)) {
+			testWorker();
 		}
 		
 		
@@ -206,7 +217,7 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		graphPanel.clear();
 		
 		if (simWorkerClient == null) {
-			simWorkerClient = new SimWorkerClient(logger);
+			simWorkerClient = new SimWorkerClient(logger, graphPanel);
 			
 		} else {
 			simWorkerClient.stopSim();
@@ -214,6 +225,26 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		
 		simWorkerClient.runSim(stxt);
 	}
+	
+	
+	private void testWorker() {
+		logger.clear();
+		graphPanel.clear();
+		
+		if (simWorkerClient == null) {
+			simWorkerClient = new SimWorkerClient(logger, graphPanel);
+			
+		} else {
+			simWorkerClient.stopSim();
+		}
+		
+		simWorkerClient.runTest();
+	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -251,8 +282,11 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ChangeHandler
 		int wh = Window.getClientHeight();
 			
 		int xptop = editor.getPanel().getAbsoluteTop();
-		editor.setHeight(wh - xptop);
+		int lstop = logScroll.getAbsoluteTop();
+		logScroll.setHeight((wh - lstop) + "px");
 		
+		editor.setHeight(lstop - xptop);
+				
 		int gstop = graphScroll.getAbsoluteTop();
 		graphScroll.setHeight((wh - gstop) + "px");
 	}
