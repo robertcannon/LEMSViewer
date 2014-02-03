@@ -23,8 +23,9 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 public class LemsServiceImpl extends RemoteServiceServlet implements
 		LemsService {
 
-	File froot = new File("/home/rcc/git/jLEMSexperimental/examples");
-	
+	File froot = new File("/home/padraig/jLEMSDev/examples");
+    
+    //File froot = new File("/home/padraig/lemspaper/tidyExamples/");
 	
 	public String serverInfo(String input) throws IllegalArgumentException {
 	 	String serverInfo = getServletContext().getServerInfo();

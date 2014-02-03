@@ -36,7 +36,7 @@
  
 	
 	
-	<target name="war" depends="clean">
+	<target name="war" depends="javac">
 		<mkdir dir="war/WEB-INF/classes/org/lemsml/jlems"/>
 		<copy todir="war/WEB-INF/classes/org/lemsml">
 			<fileset dir="../jLEMSDev/bin/org/lemsml" includes="jlems/**"/>
