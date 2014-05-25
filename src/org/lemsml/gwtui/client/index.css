@@ -19,11 +19,25 @@ body, table td, select {
 
 }
 
+div.headrow {
+	padding : 2px;
+}
+
+div.headrow button {
+	margin : 0px 0px 0px 4px;
+}
+
 .sidetitle {
+	display : inline-block;
 	padding :2px 20px;
 	font-weight : bold;
 	font-size : 14pt;
 	color : #606060;	
+}
+
+.urlinput {
+	width : 60%;
+	padding : 3px 3px;
 }
 
 .graphscroll {
@@ -33,3 +47,17 @@ body, table td, select {
 .graphpanel {
 	padding-right : 12px;
 }
+
+
+
+.dialogcloser {
+	position : absolute;
+	top : 8px;
+	right : 12px;
+	cursor : pointer;
+}
+
+.dialogcloser:hover {
+	background-color : #c0c0c0;
+}
+

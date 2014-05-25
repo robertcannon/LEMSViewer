@@ -56,8 +56,8 @@
 	 
 	 
     <target name="deploy-local-war" depends="war">
-        <echo message="Copying lemsviewer.war to /var/lib/tomcat7/webapps"/>
-        <copy file="build/lemsviewer.war" tofile="/var/lib/tomcat7/webapps/lemsviewer.war"/>
+        <echo message="Copying lemsviewer.war to /var/lib/tomcat/webapps"/>
+        <copy file="build/lemsviewer.war" tofile="/var/lib/tomcat/webapps/lemsviewer.war"/>
        
     </target>
  

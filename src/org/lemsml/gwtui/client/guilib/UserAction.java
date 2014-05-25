@@ -12,6 +12,10 @@ public class UserAction {
 		action = a;
 	}
 	
+	public void setLabel(String s) {
+		label = s;
+	}
+	
 	public String getLabel() {
 		return label;
 	}
