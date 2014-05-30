@@ -49,7 +49,7 @@ public class SimWorkerClient {
 	public void runTest() {
 		onInitCmd = "RUNTEST";
 		if (!doneInit) {
-			logger.msg("SWC initializing worker");
+			logger.msg("Initializing worker");
 			 initWorker();
 		} else {
 			sendToWorker(onInitCmd);
@@ -61,7 +61,7 @@ public class SimWorkerClient {
 		onInitCmd = "RUNMODEL " + stxt;
 		
 		if (!doneInit) {
-			logger.msg("SWC initializing worker");
+			logger.msg("Initializing worker");
 			 initWorker();
 		} else {
 			logger.msg("SWC sending RUNMODEL cmd");
@@ -82,7 +82,6 @@ public class SimWorkerClient {
  		  if (typeof(e.data) == "object") {
  		  	var pts = e.data.data;
  		  	
- 		  	console.log("got points " + pts.length);
   		  	for (var i = 0; i < pts.length; i++) {
  		  		var pt = pts[i];
  		   	    wh.@org.lemsml.gwtui.client.worker.SimWorkerClient::receivePoint(Ljava/lang/String;Ljava/lang/String;DDLjava/lang/String;)(pt.graph, pt.line, pt.x, pt.y, pt.color);		
@@ -97,26 +96,19 @@ public class SimWorkerClient {
 	  // worker = new Worker("viewer.nocache.js");  
 	  // worker = new Worker("worker.nocache.js");
 	
-	 console.log("loading js...");
 	 worker = new Worker("../task.js");
-
- 	console.log("made worker");
   	  worker.addEventListener('message', jsReceive, false);
-	 
-	 console.log("added EL");
 	  worker.postMessage("PING");
 	}-*/;
 	
 	
 	
 	public native void sendToWorker(String s) /*-{
-		console.log("Sending to worker " + s.substring(0, 4));
 		if (typeof(worker) == "undefined") {
 			console.log("undefined worker");
 		} else {
 			worker.postMessage(s);	
 		} 
-		console.log("done");
 	}-*/;
 	
 	
@@ -170,19 +162,19 @@ public class SimWorkerClient {
 			}
 			
 		} else if (start.indexOf("BASELOADED") >= 0) {
-			logger.msg("Got base load msg");
+			// logger.msg("Got base load msg");
 			 
 		} else if (start.indexOf("LOG") >= 0) {
 			logger.msg(s.substring(4, s.length()));
 			
 			
 		} else if (start.indexOf("LOADED") >= 0) {
-			logger.msg("Worker reports loaded");
+			logger.msg("Worker reports that it is ready");
 
 			if (onInitCmd != null) {
 				String sinit = onInitCmd;
 				onInitCmd = null;
-				logger.msg("Sending init cmd " + sinit.substring(0, 6));
+				logger.msg("Sending to worker: " + sinit.substring(0, 6));
 				sendToWorker(sinit);
 			}
 			

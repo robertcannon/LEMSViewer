@@ -17,6 +17,7 @@ import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -85,7 +86,7 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ResizeHandler
 		headerPanel.addStyleName("headrow");
 		 
 		
-		Label ttl = new Label("jLEMS via GWT");
+		Label ttl = new Label("LEMS Live");
 		ttl.addStyleName("sidetitle");
 		headerPanel.add(ttl);
 		
@@ -196,7 +197,15 @@ public class JLEMSRunner implements CommandHandler, ModelFileUser, ResizeHandler
 	public void gotFile(String stxt) {
 		logger.msg("Runner got the file, length=" + stxt.length());
 		editor.setText(stxt);
-		doRun();
+		resizeComponents();
+		Timer t = new Timer() {
+			public void run() {
+				doRun();
+			}
+		};
+		// doing the run in a timeout so the editor gets a chance to repaint itself
+		// doRun();
+		t.schedule(50);
 	}
 	
  

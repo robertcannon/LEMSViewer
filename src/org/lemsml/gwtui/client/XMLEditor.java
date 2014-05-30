@@ -1,5 +1,7 @@
 package org.lemsml.gwtui.client;
 
+import org.lemsml.jlems.core.logging.E;
+
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -37,6 +39,7 @@ public class XMLEditor {
 
 	public void setText(String stxt) {
 		contentLabel.setText(stxt);
+		contentLabel.addStyleName("bordered");
 		 
 	}
 

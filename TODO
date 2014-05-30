@@ -1,0 +1,15 @@
+
+server talking to remote sites to source models.
+a) enter URL to site hosting model; load it and dependencies
+b) url to site hosting list of models - tree view?
+c) pass in url as parameter
+
+
+systematic perturbation - pick dimension and factor; generate random model; run
+
+
+scrolling play with slowdonw factor (see spikes moving through window)
+
+
+structure aware editor
+

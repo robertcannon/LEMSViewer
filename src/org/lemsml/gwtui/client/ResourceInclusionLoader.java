@@ -50,8 +50,13 @@ public class ResourceInclusionLoader implements ModelFileUser {
 	
 	
 	private String siblingURL(String fnm) {
-		int ils = mainURL.lastIndexOf("/");
-		String ret = mainURL.substring(0, ils) + "/" + fnm;
+		String ret = "";
+		if (fnm.startsWith("http:") || fnm.startsWith("https:")) {
+			ret = fnm;
+		} else {
+			int ils = mainURL.lastIndexOf("/");
+			ret = mainURL.substring(0, ils) + "/" + fnm;
+		}
 		return ret;
 	}
 	

@@ -4,7 +4,7 @@
 
 // send a message to the GWT client to say we're ready.
 // it should respond with the source path for the GWT js
-self.postMessage("LOG Loaded new basic js");
+//self.postMessage("LOG Loaded new basic js");
 
 
 // viewer.nocache assigns shortcuts to these but should never call methods on them in worker model
@@ -32,7 +32,7 @@ document.compatMode = "CSS1Compat";
 
 importScripts("worker/worker.nocache.js?a=1234");
 
-self.postMessage("LOG Loaded worker.nocache.js setting readyState complete");
+self.postMessage("LOG Loaded worker javascript. Ready to run models.");
 
 document.readyState = "complete";
 
